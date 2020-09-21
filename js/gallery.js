@@ -4,7 +4,7 @@ import items from './gallery-items.js';
 const refs = {
   galleryWrapper: document.querySelector('.js-gallery'),
 };
-console.log(refs.galleryWrapper);
+console.dir(refs.galleryWrapper);
 
 const galleryMarkup = items.map(item => {
   const galleryItem = document.createElement('li');
@@ -17,7 +17,30 @@ const galleryMarkup = items.map(item => {
   galleryItemImg.src = item.preview;
   galleryItemImg.setAttribute('data-source', item.original);
   galleryItemImg.alt = item.description;
-  console.log(galleryItem);
-  console.dir(galleryItemLink);
-  console.dir(galleryItemImg);
+  galleryItemLink.appendChild(galleryItemImg);
+  galleryItem.appendChild(galleryItemLink);
+  refs.galleryWrapper.appendChild(galleryItem);
 });
+
+// refs.galleryWrapper.addEventListener('click', event => {
+//   // if (event.currentTarget.nodeName !== 'IMG') {
+//   //   return;
+//   // }
+//   document.body.classList.add('.lightbox.is-open');
+//   console.log(event.target);
+//   console.log(event.currentTarget);
+// });
+
+const a = document.querySelector('.js-lightbox');
+
+window.addEventListener('click', () => {
+  a.classList.add('is-open');
+});
+
+const b = document.querySelector('.lightbox__button');
+
+b.addEventListener('click', onOpen);
+function onOpen() {
+  a.classList.remove('is-open');
+  console.log(a);
+}
