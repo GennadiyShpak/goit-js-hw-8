@@ -3,8 +3,11 @@ import items from './gallery-items.js';
 
 const refs = {
   galleryWrapper: document.querySelector('.js-gallery'),
+  overlayWrapper: document.querySelector('.js-lightbox'),
+  closeBtn: document.querySelector('.lightbox__button'),
+  overlayContent: document.querySelector('.lightbox__image'),
+  overlayContentWrapper: document.querySelector('.lightbox__content'),
 };
-console.dir(refs.galleryWrapper);
 
 const galleryMarkup = items.map(item => {
   const galleryItem = document.createElement('li');
@@ -22,25 +25,31 @@ const galleryMarkup = items.map(item => {
   refs.galleryWrapper.appendChild(galleryItem);
 });
 
-// refs.galleryWrapper.addEventListener('click', event => {
-//   // if (event.currentTarget.nodeName !== 'IMG') {
-//   //   return;
-//   // }
-//   document.body.classList.add('.lightbox.is-open');
-//   console.log(event.target);
-//   console.log(event.currentTarget);
-// });
-
-const a = document.querySelector('.js-lightbox');
-
-window.addEventListener('click', () => {
-  a.classList.add('is-open');
-});
-
-const b = document.querySelector('.lightbox__button');
-
-b.addEventListener('click', onOpen);
-function onOpen() {
-  a.classList.remove('is-open');
-  console.log(a);
+function onOpenModal(event) {
+  event.preventDefault();
+  if (event.target.nodeName !== 'IMG') {
+    return;
+  }
+  refs.overlayWrapper.classList.add('is-open');
+  refs.overlayContent.src = event.target.dataset.source;
+  refs.overlayContent.alt = event.target.alt;
 }
+function onCloseModal() {
+  refs.overlayWrapper.classList.remove('is-open');
+}
+
+function clickOnOverlay(event) {
+  if (event.currentTarget === event.target) {
+    refs.overlayWrapper.classList.remove('is-open');
+  }
+}
+function onCloseModalWithKeyboard(event) {
+  if (event.code === 'Escape') {
+    refs.overlayWrapper.classList.remove('is-open');
+  }
+}
+
+refs.galleryWrapper.addEventListener('click', onOpenModal);
+refs.closeBtn.addEventListener('click', onCloseModal);
+refs.overlayContentWrapper.addEventListener('click', clickOnOverlay);
+refs.galleryWrapper.addEventListener('keydown', onCloseModalWithKeyboard);
