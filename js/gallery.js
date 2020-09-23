@@ -7,22 +7,31 @@ const refs = {
   closeBtn: document.querySelector('.lightbox__button'),
   overlayContent: document.querySelector('.lightbox__image'),
   overlayContentWrapper: document.querySelector('.lightbox__content'),
+  rightBtn: document.querySelector('.right'),
+  leftBtn: document.querySelector('.left'),
 };
 
+console.log(refs.rightBtn);
+console.log(refs.leftBtn);
+
 const galleryMarkup = items.map(item => {
-  const galleryItem = document.createElement('li');
-  galleryItem.classList.add('gallery__item');
-  const galleryItemLink = document.createElement('a');
-  galleryItemLink.classList.add('gallery__link');
-  galleryItemLink.href = item.original;
-  const galleryItemImg = document.createElement('img');
-  galleryItemImg.classList.add('gallery__image');
-  galleryItemImg.src = item.preview;
-  galleryItemImg.setAttribute('data-source', item.original);
-  galleryItemImg.alt = item.description;
-  galleryItemLink.appendChild(galleryItemImg);
-  galleryItem.appendChild(galleryItemLink);
-  refs.galleryWrapper.appendChild(galleryItem);
+  refs.galleryWrapper.insertAdjacentHTML(
+    'beforeend',
+    `<li class="gallery__item">
+      <a
+        class="gallery__link"
+        href=${item.original}
+      >
+        <img
+          class="gallery__image"
+          src=${item.preview}
+          data-source=${item.original}
+          alt=${item.description}
+        />
+      </a>
+    </li>`,
+  );
+  return item;
 });
 
 function onOpenModal(event) {
@@ -48,8 +57,37 @@ function onCloseModalWithKeyboard(event) {
     refs.overlayWrapper.classList.remove('is-open');
   }
 }
+function onLeftSide() {
+  for (let i = 0; i < galleryMarkup.length; i += 1) {
+    // let maxValue = Number(galleryMarkup.length) - 1;
+    if (refs.overlayContent.classList.contains('on-active')) {
+      refs.overlayContent.classList.remove('on-active');
+      refs.overlayContent.src = galleryMarkup[8].original;
+      console.log(galleryMarkup);
+      console.log(refs.overlayContent.src);
+    } else if (refs.overlayContent.src === galleryMarkup[0].original) {
+      refs.overlayContent.src = galleryMarkup[0].original;
+      refs.overlayContent.classList.add('on-active');
+      return;
+    } else if (refs.overlayContent.src === galleryMarkup[i].original) {
+      refs.overlayContent.src = galleryMarkup[i - 1].original;
+    }
+  }
+}
+// function onRightSide() {
+//   for (let i = 0; i < galleryMarkup.length; i += 1) {
+//     if (refs.overlayContent.src === galleryMarkup[maxValue].original) {
+//       refs.overlayContent.src = galleryMarkup[0].original;
+//     } else if (refs.overlayContent.src === galleryMarkup[i].original) {
+//       refs.overlayContent.src = galleryMarkup[i + 1].original;
+//     }
+//     console.log(galleryMarkup[i + 1].original);
+//   }
+// }
 
 refs.galleryWrapper.addEventListener('click', onOpenModal);
 refs.closeBtn.addEventListener('click', onCloseModal);
 refs.overlayContentWrapper.addEventListener('click', clickOnOverlay);
 refs.galleryWrapper.addEventListener('keydown', onCloseModalWithKeyboard);
+refs.leftBtn.addEventListener('click', onLeftSide);
+// refs.rightBtn.addEventListener('click', onRightSide);
