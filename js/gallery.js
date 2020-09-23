@@ -59,35 +59,32 @@ function onCloseModalWithKeyboard(event) {
 }
 function onLeftSide() {
   for (let i = 0; i < galleryMarkup.length; i += 1) {
-    // let maxValue = Number(galleryMarkup.length) - 1;
-    if (refs.overlayContent.classList.contains('on-active')) {
-      refs.overlayContent.classList.remove('on-active');
-      refs.overlayContent.src = galleryMarkup[8].original;
-      console.log(galleryMarkup);
-      console.log(refs.overlayContent.src);
-    } else if (refs.overlayContent.src === galleryMarkup[0].original) {
+    let maxValue = Number(galleryMarkup.length) - 1;
+    if (refs.overlayContent.src === galleryMarkup[0].original) {
       refs.overlayContent.src = galleryMarkup[0].original;
-      refs.overlayContent.classList.add('on-active');
-      return;
     } else if (refs.overlayContent.src === galleryMarkup[i].original) {
       refs.overlayContent.src = galleryMarkup[i - 1].original;
     }
   }
 }
-// function onRightSide() {
-//   for (let i = 0; i < galleryMarkup.length; i += 1) {
-//     if (refs.overlayContent.src === galleryMarkup[maxValue].original) {
-//       refs.overlayContent.src = galleryMarkup[0].original;
-//     } else if (refs.overlayContent.src === galleryMarkup[i].original) {
-//       refs.overlayContent.src = galleryMarkup[i + 1].original;
-//     }
-//     console.log(galleryMarkup[i + 1].original);
-//   }
-// }
+function onRightSide() {
+  let i;
+  let n = i;
+  for (i = 0; i < galleryMarkup.length; i += 1) {
+    if (refs.overlayContent.src === galleryMarkup[i].original) {
+      refs.overlayContent.src = galleryMarkup[i + 1].original;
+      n = i + 1;
+      console.log(n);
+      return;
+    } else if (n > galleryMarkup.length) {
+      refs.overlayContent.src = galleryMarkup[0].original;
+    }
+  }
+}
 
 refs.galleryWrapper.addEventListener('click', onOpenModal);
 refs.closeBtn.addEventListener('click', onCloseModal);
 refs.overlayContentWrapper.addEventListener('click', clickOnOverlay);
 refs.galleryWrapper.addEventListener('keydown', onCloseModalWithKeyboard);
 refs.leftBtn.addEventListener('click', onLeftSide);
-// refs.rightBtn.addEventListener('click', onRightSide);
+refs.rightBtn.addEventListener('click', onRightSide);
