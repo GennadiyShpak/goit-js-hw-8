@@ -68,17 +68,17 @@ function onLeftSide() {
   }
 }
 function onRightSide() {
-  let i;
-  let n = i;
-  for (i = 0; i < galleryMarkup.length; i += 1) {
+  for (let i = 0; i < galleryMarkup.length; i += 1) {
+       let a = galleryMarkup.findIndex(el => el.original === galleryMarkup[i].original)
+    a += 1;
+    if (a === galleryMarkup.length) { refs.overlayContent.src = galleryMarkup[0].original; return}
     if (refs.overlayContent.src === galleryMarkup[i].original) {
       refs.overlayContent.src = galleryMarkup[i + 1].original;
-      n = i + 1;
-      console.log(n);
-      return;
-    } else if (n > galleryMarkup.length) {
-      refs.overlayContent.src = galleryMarkup[0].original;
-    }
+      console.log(a)
+       return;}
+    // } else if (n > (galleryMarkup.length-1)) {
+    //   refs.overlayContent.src = galleryMarkup[0].original;
+    // }
   }
 }
 
