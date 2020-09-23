@@ -7,12 +7,9 @@ const refs = {
   closeBtn: document.querySelector('.lightbox__button'),
   overlayContent: document.querySelector('.lightbox__image'),
   overlayContentWrapper: document.querySelector('.lightbox__content'),
-  rightBtn: document.querySelector('.right'),
-  leftBtn: document.querySelector('.left'),
+  rightArrow: document.querySelector('.right'),
+  leftArrow: document.querySelector('.left'),
 };
-
-console.log(refs.rightBtn);
-console.log(refs.leftBtn);
 
 const galleryMarkup = items.map(item => {
   refs.galleryWrapper.insertAdjacentHTML(
@@ -52,39 +49,41 @@ function clickOnOverlay(event) {
     refs.overlayWrapper.classList.remove('is-open');
   }
 }
-function onCloseModalWithKeyboard(event) {
-  if (event.code === 'Escape') {
-    refs.overlayWrapper.classList.remove('is-open');
-  }
+function onPressKey(event) {
+  if (event.code === 'Escape') onCloseModal();
+  else if (event.code === 'ArrowLeft') onLeftSide();
+  else if (event.code === 'ArrowRight') onRightSide();
 }
+
 function onLeftSide() {
-  for (let i = 0; i < galleryMarkup.length; i += 1) {
-    let maxValue = Number(galleryMarkup.length) - 1;
-    if (refs.overlayContent.src === galleryMarkup[0].original) {
-      refs.overlayContent.src = galleryMarkup[0].original;
-    } else if (refs.overlayContent.src === galleryMarkup[i].original) {
-      refs.overlayContent.src = galleryMarkup[i - 1].original;
-    }
+  let sliderIndex = galleryMarkup.findIndex(
+    el => el.original === refs.overlayContent.src,
+  );
+  sliderIndex -= 1;
+  const maxValue = galleryMarkup.length - 1;
+  if (sliderIndex < 0) {
+    refs.overlayContent.src = galleryMarkup[maxValue].original;
+  }
+  if (refs.overlayContent.src === galleryMarkup[sliderIndex + 1].original) {
+    refs.overlayContent.src = galleryMarkup[sliderIndex].original;
   }
 }
 function onRightSide() {
-  for (let i = 0; i < galleryMarkup.length; i += 1) {
-       let a = galleryMarkup.findIndex(el => el.original === galleryMarkup[i].original)
-    a += 1;
-    if (a === galleryMarkup.length) { refs.overlayContent.src = galleryMarkup[0].original; return}
-    if (refs.overlayContent.src === galleryMarkup[i].original) {
-      refs.overlayContent.src = galleryMarkup[i + 1].original;
-      console.log(a)
-       return;}
-    // } else if (n > (galleryMarkup.length-1)) {
-    //   refs.overlayContent.src = galleryMarkup[0].original;
-    // }
+  let sliderqIndex = galleryMarkup.findIndex(
+    el => el.original === refs.overlayContent.src,
+  );
+  sliderqIndex += 1;
+  if (sliderqIndex > galleryMarkup.length - 1) {
+    refs.overlayContent.src = galleryMarkup[0].original;
+  }
+  if (refs.overlayContent.src === galleryMarkup[sliderqIndex - 1].original) {
+    refs.overlayContent.src = galleryMarkup[sliderqIndex].original;
   }
 }
 
 refs.galleryWrapper.addEventListener('click', onOpenModal);
 refs.closeBtn.addEventListener('click', onCloseModal);
 refs.overlayContentWrapper.addEventListener('click', clickOnOverlay);
-refs.galleryWrapper.addEventListener('keydown', onCloseModalWithKeyboard);
-refs.leftBtn.addEventListener('click', onLeftSide);
-refs.rightBtn.addEventListener('click', onRightSide);
+refs.galleryWrapper.addEventListener('keydown', onPressKey);
+refs.leftArrow.addEventListener('click', onLeftSide);
+refs.rightArrow.addEventListener('click', onRightSide);
