@@ -49,7 +49,6 @@ function clickOnOverlay(event) {
   }
 }
 function onPressKey(event) {
-  console.log(event);
   if (event.code === 'Escape') onCloseModal();
   else if (event.code === 'ArrowLeft') onLeftSide();
   else if (event.code === 'ArrowRight') onRightSide();
@@ -67,18 +66,22 @@ function onLeftSide() {
   const maxValue = items.length - 1;
   if (sliderIndex < 0) {
     refs.overlayContent.src = items[maxValue].original;
+    refs.overlayContent.alt = items[maxValue].description;
   }
   if (refs.overlayContent.src === items[sliderIndex + 1].original) {
     refs.overlayContent.src = items[sliderIndex].original;
+    refs.overlayContent.alt = items[sliderIndex].description;
   }
 }
 function onRightSide() {
   sliderIndex = sliderGalleryIndex() + 1;
   if (sliderIndex > items.length - 1) {
     refs.overlayContent.src = items[0].original;
+    refs.overlayContent.alt = items[0].description;
   }
   if (refs.overlayContent.src === items[sliderIndex - 1].original) {
     refs.overlayContent.src = items[sliderIndex].original;
+    refs.overlayContent.alt = items[sliderIndex].description;
   }
 }
 
