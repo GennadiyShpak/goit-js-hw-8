@@ -62,8 +62,7 @@ function sliderGalleryIndex() {
   return items.findIndex(el => el.original === refs.overlayContent.src);
 }
 
-function onLeftSide(event) {
-  console.log(event);
+function onLeftSide() {
   sliderIndex = sliderGalleryIndex() - 1;
   const maxValue = items.length - 1;
   if (sliderIndex < 0) {
@@ -73,8 +72,7 @@ function onLeftSide(event) {
     refs.overlayContent.src = items[sliderIndex].original;
   }
 }
-function onRightSide(event) {
-  console.log(event);
+function onRightSide() {
   sliderIndex = sliderGalleryIndex() + 1;
   if (sliderIndex > items.length - 1) {
     refs.overlayContent.src = items[0].original;
