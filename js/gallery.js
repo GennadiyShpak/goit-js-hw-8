@@ -85,6 +85,6 @@ function onRightSide() {
 refs.galleryWrapper.addEventListener('click', onOpenModal);
 refs.closeBtn.addEventListener('click', onCloseModal);
 refs.overlayContentWrapper.addEventListener('click', clickOnOverlay);
-refs.galleryWrapper.addEventListener('keydown', onPressKey);
+window.addEventListener('keydown', onPressKey);
 refs.leftArrow.addEventListener('click', onLeftSide);
 refs.rightArrow.addEventListener('click', onRightSide);
