@@ -10,8 +10,9 @@ const refs = {
   rightArrow: document.querySelector('.right'),
   leftArrow: document.querySelector('.left'),
 };
+let sliderIndex;
 
-const galleryMarkup = items.map(item => {
+items.forEach(item => {
   refs.galleryWrapper.insertAdjacentHTML(
     'beforeend',
     `<li class="gallery__item">
@@ -28,7 +29,6 @@ const galleryMarkup = items.map(item => {
       </a>
     </li>`,
   );
-  return item;
 });
 
 function onOpenModal(event) {
@@ -43,41 +43,44 @@ function onOpenModal(event) {
 function onCloseModal() {
   refs.overlayWrapper.classList.remove('is-open');
 }
-
 function clickOnOverlay(event) {
   if (event.currentTarget === event.target) {
     refs.overlayWrapper.classList.remove('is-open');
   }
 }
 function onPressKey(event) {
+  console.log(event);
   if (event.code === 'Escape') onCloseModal();
   else if (event.code === 'ArrowLeft') onLeftSide();
   else if (event.code === 'ArrowRight') onRightSide();
 }
 
-function onLeftSide() {
-  let sliderIndex = galleryMarkup.findIndex(
-    el => el.original === refs.overlayContent.src,
-  );
-  sliderIndex -= 1;
-  const maxValue = galleryMarkup.length - 1;
-  if (sliderIndex < 0) {
-    refs.overlayContent.src = galleryMarkup[maxValue].original;
+function sliderGalleryIndex() {
+  if (!refs.overlayWrapper.classList.contains('is-open')) {
+    return null;
   }
-  if (refs.overlayContent.src === galleryMarkup[sliderIndex + 1].original) {
-    refs.overlayContent.src = galleryMarkup[sliderIndex].original;
+  return items.findIndex(el => el.original === refs.overlayContent.src);
+}
+
+function onLeftSide(event) {
+  console.log(event);
+  sliderIndex = sliderGalleryIndex() - 1;
+  const maxValue = items.length - 1;
+  if (sliderIndex < 0) {
+    refs.overlayContent.src = items[maxValue].original;
+  }
+  if (refs.overlayContent.src === items[sliderIndex + 1].original) {
+    refs.overlayContent.src = items[sliderIndex].original;
   }
 }
-function onRightSide() {
-  let sliderqIndex = galleryMarkup.findIndex(
-    el => el.original === refs.overlayContent.src,
-  );
-  sliderqIndex += 1;
-  if (sliderqIndex > galleryMarkup.length - 1) {
-    refs.overlayContent.src = galleryMarkup[0].original;
+function onRightSide(event) {
+  console.log(event);
+  sliderIndex = sliderGalleryIndex() + 1;
+  if (sliderIndex > items.length - 1) {
+    refs.overlayContent.src = items[0].original;
   }
-  if (refs.overlayContent.src === galleryMarkup[sliderqIndex - 1].original) {
-    refs.overlayContent.src = galleryMarkup[sliderqIndex].original;
+  if (refs.overlayContent.src === items[sliderIndex - 1].original) {
+    refs.overlayContent.src = items[sliderIndex].original;
   }
 }
 
